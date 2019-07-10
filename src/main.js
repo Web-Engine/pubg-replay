@@ -1,8 +1,13 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import App from './App.vue';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+let array = [
+    [ 1, 2, 3 ],
+];
 
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+    render: h => h(App),
+    array,
+}).$mount('#app');
