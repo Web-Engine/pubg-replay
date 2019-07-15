@@ -1,12 +1,11 @@
 <template>
-    <div class="Index__Wrapper">
-        Index
+    <div class="IndexPage">
     </div>
 </template>
 
 <script>
 export default {
-    name: 'Index',
+    name: 'IndexPage',
     data() {
         return {};
     },
@@ -14,4 +13,7 @@ export default {
 </script>
 
 <style scoped>
+.IndexPage {
+
+}
 </style>
