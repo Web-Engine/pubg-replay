@@ -14,7 +14,9 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "vue-router": "^3.0.7",
+    "vuex": "^3.1.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.9.0",
@@ -35,17 +37,56 @@
       "eslint:recommended"
     ],
     "rules": {
-      "indent": ["error", 4],
-      "comma-style": ["error", "last"],
-      "semi": ["error", "always"],
-      "comma-dangle": ["error", "always-multiline"],
-      "block-spacing": ["error", "always"],
-      "comma-spacing": ["error", { "before": false, "after": true }],
-      "eol-last": ["error", "always"],
-      "func-call-spacing": ["error", "never"],
-      "no-trailing-spaces": ["error", { "skipBlankLines": false, "ignoreComments": false }],
-      "array-bracket-spacing": ["error", "always"],
-      "array-element-newline": ["error", "consistent"]
+      "indent": [
+        "error",
+        4
+      ],
+      "comma-style": [
+        "error",
+        "last"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "comma-dangle": [
+        "error",
+        "always-multiline"
+      ],
+      "block-spacing": [
+        "error",
+        "always"
+      ],
+      "comma-spacing": [
+        "error",
+        {
+          "before": false,
+          "after": true
+        }
+      ],
+      "eol-last": [
+        "error",
+        "always"
+      ],
+      "func-call-spacing": [
+        "error",
+        "never"
+      ],
+      "no-trailing-spaces": [
+        "error",
+        {
+          "skipBlankLines": false,
+          "ignoreComments": false
+        }
+      ],
+      "array-bracket-spacing": [
+        "error",
+        "always"
+      ],
+      "array-element-newline": [
+        "error",
+        "consistent"
+      ]
     },
     "parserOptions": {
       "parser": "babel-eslint"
