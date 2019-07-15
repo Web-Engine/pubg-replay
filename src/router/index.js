@@ -5,6 +5,7 @@ Vue.use(VueRouter);
 import Index from './../pages/Index.vue';
 
 const router = new VueRouter({
+    mode: 'history',
     routes: [
         {
             path: '/',
