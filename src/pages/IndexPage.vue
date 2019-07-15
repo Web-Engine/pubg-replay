@@ -1,5 +1,6 @@
 <template>
     <div class="IndexPage">
+        Index
     </div>
 </template>
 
