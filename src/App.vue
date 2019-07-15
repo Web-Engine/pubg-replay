@@ -2,26 +2,22 @@
     <div id="app">
         <header>
             <div class="layout-width clearfix">
-                <h1 class="fleft"><a href="/">Main</a></h1>
+                <h1 class="logo fleft"><a href="/">PUBG Replay</a></h1>
 
                 <nav class="fright">
                     <ul class="clearfix">
                         <li class="fleft" v-for="menu in menus" :key="menu.path">
-                            <router-link :to="menu">{{ menu.text }}</router-link>
+                            <router-link :to="menu.to">{{ menu.text }}</router-link>
                         </li>
                     </ul>
-
                 </nav>
             </div>
         </header>
+
         <div class="layout-width">
             <main>
-                    <router-view></router-view>
+                <router-view></router-view>
             </main>
-
-            <footer>
-
-            </footer>
         </div>
     </div>
 </template>
@@ -33,8 +29,10 @@ export default {
         return {
             menus: [
                 {
-                    path: '/search',
-                    text: 'Search'
+                    to: {
+                        path: '/search',
+                    },
+                    text: 'Search',
                 },
             ],
         };
@@ -84,12 +82,12 @@ export default {
         background: #f7f7f7;
     }
 
-    header h1 {
+    header .logo {
         margin: 0;
         font-size: 1rem;
     }
 
-    header h1 a {
+    header .logo a {
         display: block;
         color: #444;
         text-decoration: none;
@@ -111,13 +109,5 @@ export default {
         height: 70px;
         line-height: 70px;
         padding: 0 20px;
-    }
-
-    main {
-        padding: 20px;
-    }
-
-    footer {
-
     }
 </style>
