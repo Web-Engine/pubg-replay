@@ -24,6 +24,20 @@ app.get('/matches/:id', async (req, res) => {
         },
     });
 
+    let resObject = JSON.parse(response);
+    let telementryID = resObject.data.relationships.assets.data[0].id;
+    let telementryURL = resObject.included[resObject.included.findIndex((data) => {
+        return data.id === telementryID;
+    })].attributes.URL;
+
+    response = await request.get({
+        url:  telementryURL,
+        headers: {
+            'Authorization': '',
+            'Accept': 'application/json',
+        },
+        gzip: true,
+    });
 });
 
 const server = app.listen(8080, () => {
