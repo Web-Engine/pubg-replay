@@ -27,6 +27,9 @@ app.get('/player/:platform/:name', async (req, res, next) => {
         });
 
         matchData = JSON.parse(response);
+        match.createdTime = matchData.data.attributes.createdAt;
+        match.playTime = matchData.data.attributes.duration;
+        match.map = matchData.data.attributes.mapName;
 
         switch (matchData.data.attributes.gameMode) {
             case "solo" :
