@@ -13,7 +13,35 @@ app.get('/player/:platform/:name', async (req, res, next) => {
         },
     });
 
-    res.send(JSON.parse(response));
+    let playerData = JSON.parse(response);
+    let recentMatchData = playerData.data[0].relationships.matches.data;
+    let match, matchData, matchSolo = new Array(), matchDuo = new Array(), matchSquad = new Array(), matchUnknown = new Array();
+
+    for (match of recentMatchData) {
+        response = await request.get({
+            url: `https://api.pubg.com/shards/${playerData.data[0].attributes.shardId}/matches/${match.id}`,
+            headers: {
+                'Authorization': `Bearer ${apikey}`,
+                'Accept': 'application/json',
+            },
+        });
+
+        matchData = JSON.parse(response);
+
+        switch (matchData.data.attributes.gameMode) {
+            case "solo" :
+                matchSolo.push(match);
+                break;
+            case "duo" :
+                matchDuo.push(match);
+                break;
+            case "squad" :
+                matchSquad.push(match);
+                break;
+            default :
+                matchUnknown.push(matchData);
+        }
+    }
 });
 
 app.get('/matches/:platform/:id', async (req, res) => {
@@ -25,6 +53,8 @@ app.get('/matches/:platform/:id', async (req, res) => {
             'Accept': 'application/json',
         },
     });
+
+    res.send(JSON.parse(response));
 
     let resObject = JSON.parse(response);
     let telemetryID = resObject.data.relationships.assets.data[0].id;
@@ -39,8 +69,6 @@ app.get('/matches/:platform/:id', async (req, res) => {
         },
         gzip: true,
     });
-
-    res.send(JSON.parse(response));
 });
 
 const server = app.listen(3000, () => {
