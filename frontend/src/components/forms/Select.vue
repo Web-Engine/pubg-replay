@@ -84,16 +84,20 @@ export default {
     .Select select {
         position: absolute;
         z-index: -1;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
     }
 
     .Select__text {
+        box-sizing: border-box;
         position: relative;
         background: #fff;
         border: 1px solid #ddd;
         border-radius: 4px;
         padding: 0 25px 0 10px;
-        height: 30px;
-        line-height: 30px;
+        height: 44px;
+        line-height: 44px;
         white-space: nowrap;
     }
 
