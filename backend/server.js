@@ -1,7 +1,8 @@
 const request = require('request-promise-native');
 const express = require('express');
 const app = express();
-const apikey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5NTdhZTMzMC05NDBiLTAxMzctY2NhZi0wMTlhZmY3MjIwZWIiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTY0MzkwMTE5LCJwdWIiOiJibHVlaG9sZSIsInRpdGxlIjoicHViZyIsImFwcCI6ImppbnN1MjUwNC1uYXZlIn0.Zpcy7YdOvjzuN2889h0YMwoqRfpgiFH4558CvQJeqHo';
+require('dotenv').config();
+const apikey = process.env.API_KEY;
 
 app.get('/player/:platform/:name', async (req, res, next) => {
 
@@ -74,6 +75,6 @@ app.get('/matches/:platform/:id', async (req, res) => {
     });
 });
 
-const server = app.listen(3000, () => {
+const server = app.listen(process.env.SERVER_PORT, () => {
     console.log('Server started at port', server.address().port);
 });
