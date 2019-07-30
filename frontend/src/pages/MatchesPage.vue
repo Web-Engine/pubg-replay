@@ -53,7 +53,7 @@ export default {
         float: left;
     }
 
-    .clearfix {
+    .clearfix::after {
         display: block;
         content: '';
         clear: both;
