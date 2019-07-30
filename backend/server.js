@@ -4,7 +4,8 @@ const app = express();
 require('dotenv').config();
 const apikey = process.env.API_KEY;
 
-app.get('/player/:platform/:name', async (req, res, next) => {
+
+app.get('/player/:platform/:name', async (req, res) => {
 
     let response = await request.get({
         url: `https://api.pubg.com/shards/${req.params.platform}/players?filter[playerNames]=${req.params.name}`,
@@ -16,36 +17,30 @@ app.get('/player/:platform/:name', async (req, res, next) => {
 
     let playerData = JSON.parse(response);
     let recentMatchData = playerData.data[0].relationships.matches.data;
-    let match, matchData, matchSolo = new Array(), matchDuo = new Array(), matchSquad = new Array(), matchUnknown = new Array();
+    let match, reqMatchData = new Array(), matchData, index;
+    let matchSolo = new Array(), matchDuo = new Array(), matchSquad = new Array(), matchUnknown = new Array();
 
     for (match of recentMatchData) {
-        response = await request.get({
+
+        reqMatchData.push(request.get({
             url: `https://api.pubg.com/shards/${playerData.data[0].attributes.shardId}/matches/${match.id}`,
             headers: {
                 'Authorization': `Bearer ${apikey}`,
                 'Accept': 'application/json',
             },
-        });
-
-        matchData = JSON.parse(response);
-        match.createdTime = matchData.data.attributes.createdAt;
-        match.playTime = matchData.data.attributes.duration;
-        match.map = matchData.data.attributes.mapName;
-
-        switch (matchData.data.attributes.gameMode) {
-            case "solo" :
-                matchSolo.push(match);
-                break;
-            case "duo" :
-                matchDuo.push(match);
-                break;
-            case "squad" :
-                matchSquad.push(match);
-                break;
-            default :
-                matchUnknown.push(matchData);
-        }
+        }));
     }
+
+    resMatchData = await Promise.all(reqMatchData);
+
+    for (index in resMatchData) {
+        resMatchData[index] = JSON.parse(resMatchData[index]);
+    }
+
+    res.send(resMatchData);
+
+
+
 });
 
 app.get('/matches/:platform/:id', async (req, res) => {
