@@ -17,8 +17,7 @@ app.get('/player/:platform/:name', async (req, res) => {
 
     let playerData = JSON.parse(response);
     let recentMatchData = playerData.data[0].relationships.matches.data;
-    let match, reqMatchData = new Array(), matchData, index;
-    let matchSolo = new Array(), matchDuo = new Array(), matchSquad = new Array(), matchUnknown = new Array();
+    let match, reqMatchData = new Array(), index;
 
     for (match of recentMatchData) {
 
