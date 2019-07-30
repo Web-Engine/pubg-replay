@@ -3,13 +3,8 @@
         <div class="ui">
             ui
         </div>
-        <div class="clearfix">
-            <div class="replay fleft">
-                replay
-            </div>
-            <div class="killLog fleft">
-                kill log
-            </div>
+        <div class="replay">
+            replay
         </div>
     </div>
 </template>
