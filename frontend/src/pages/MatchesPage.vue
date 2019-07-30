@@ -3,7 +3,7 @@
         <div class="playerName">
                 player name
         </div>
-        <div class="matchs clearfix">
+        <div class="matches clearfix">
             <div class="solo fleft">
                 <div class="text" id="soloText">
                     <img src="../../images/User.png">
@@ -73,10 +73,10 @@ export default {
         line-height: 120px;
     }
 
-    .matchs {
+    .matches {
     }
 
-    .matchs .text {
+    .matches .text {
         box-sizing: border-box;
         margin: 0 5px;
         padding-left: 10px;
@@ -87,24 +87,24 @@ export default {
         color: white;
     }
 
-    .matchs .text img {
+    .matches .text img {
         width: 20px;
         height: 20px;
     }
 
-    .matchs #soloText {
+    .matches #soloText {
         background: #ff9514;
     }
 
-    .matchs #duoText {
+    .matches #duoText {
         background: #16de59;
     }
 
-    .matchs #squadText {
+    .matches #squadText {
         background: #1979ff;
     }
 
-    .matchs .data {
+    .matches .data {
         box-sizing: border-box;
         margin: 0 5px 10px;
         padding: 10px;
@@ -113,15 +113,15 @@ export default {
         color: white;
     }
 
-    .matchs #soloData {
+    .matches #soloData {
         background: #ffbc75;
     }
 
-    .matchs #duoData {
+    .matches #duoData {
         background: #5be383;
     }
 
-    .matchs #squadData {
+    .matches #squadData {
         background: #77b7f7;
     }
 </style>
