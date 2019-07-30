@@ -30,7 +30,25 @@ app.get('/matches/:platform/:id', async (req, res) => {
 
     let telemetryData = JSON.parse(response);
     let formatData = new Object();
-    
+
+    {
+        let i;
+        for (i = 0; i < telemetryData.length; i++) {
+            if (telemetryData[i]._T === 'LogMatchStart') break;
+        }
+
+        telemetryData.splice(0, i);
+    }
+
+    let matchStart = telemetryData.shift();
+
+    formatData = {
+        assets: {
+            background: matchStart.mapName,
+        },
+    };
+
+    res.send(formatData);
 
 });
 
