@@ -97,7 +97,7 @@ export default {
     }
 
     .matches #duoText {
-        background: #16de59;
+        background: #00d648;
     }
 
     .matches #squadText {
@@ -114,14 +114,14 @@ export default {
     }
 
     .matches #soloData {
-        background: #ffbc75;
+        background: #ffd191;
     }
 
     .matches #duoData {
-        background: #5be383;
+        background: #90f0ab;
     }
 
     .matches #squadData {
-        background: #77b7f7;
+        background: #9bd5ff;
     }
 </style>
