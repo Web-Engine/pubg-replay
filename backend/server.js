@@ -4,44 +4,6 @@ const app = express();
 require('dotenv').config();
 const apikey = process.env.API_KEY;
 
-
-app.get('/player/:platform/:name', async (req, res) => {
-
-    let response = await request.get({
-        url: `https://api.pubg.com/shards/${req.params.platform}/players?filter[playerNames]=${req.params.name}`,
-        headers: {
-            'Authorization': `Bearer ${apikey}`,
-            'Accept': 'application/json',
-        },
-    });
-
-    let playerData = JSON.parse(response);
-    let recentMatchData = playerData.data[0].relationships.matches.data;
-    let match, reqMatchData = new Array(), index;
-
-    for (match of recentMatchData) {
-
-        reqMatchData.push(request.get({
-            url: `https://api.pubg.com/shards/${playerData.data[0].attributes.shardId}/matches/${match.id}`,
-            headers: {
-                'Authorization': `Bearer ${apikey}`,
-                'Accept': 'application/json',
-            },
-        }));
-    }
-
-    resMatchData = await Promise.all(reqMatchData);
-
-    for (index in resMatchData) {
-        resMatchData[index] = JSON.parse(resMatchData[index]);
-    }
-
-    res.send(resMatchData);
-
-
-
-});
-
 app.get('/matches/:platform/:id', async (req, res) => {
 
     let response = await request.get({
@@ -51,8 +13,6 @@ app.get('/matches/:platform/:id', async (req, res) => {
             'Accept': 'application/json',
         },
     });
-
-    res.send(JSON.parse(response));
 
     let resObject = JSON.parse(response);
     let telemetryID = resObject.data.relationships.assets.data[0].id;
@@ -67,6 +27,11 @@ app.get('/matches/:platform/:id', async (req, res) => {
         },
         gzip: true,
     });
+
+    let telemetryData = JSON.parse(response);
+    let formatData = new Object();
+    
+
 });
 
 const server = app.listen(process.env.SERVER_PORT, () => {
