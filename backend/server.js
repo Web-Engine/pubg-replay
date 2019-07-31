@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const apikey = process.env.API_KEY;
+app.use(express.json({limit: '50mb'}));
 
 app.get('/matches/:platform/:id', async (req, res) => {
 
@@ -37,6 +38,17 @@ app.get('/matches/:platform/:id', async (req, res) => {
 
     res.send(formatData);
 });
+
+app.post('/data', async (req, res) => {
+
+    let reqData = req.body;
+
+
+
+    res.send(reqData);
+
+
+})
 
 const server = app.listen(process.env.SERVER_PORT, () => {
     console.log('Server started at port', server.address().port);
