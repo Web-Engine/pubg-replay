@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        body { margin: 0; padding: 30px; }
+
+        .controller {
+            display: flex;
+            width: 800px;
+        }
+
+        #current-time {
+            display: block;
+            width: 600px;
+        }
+
+        #speed {
+            display: block;
+            width: 100px;
+        }
+
+        .buttons button {
+            display: block;
+            width: 100px;
+        }
+
+        #pause {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<script src="./js/replay.js"></script>
+
+<div>
+    <label>Select replay file: <input id="file" type="file"></label>
+
+    <div class="controller">
+        <div class="buttons">
+            <button id="play" type="button">Play</button>
+            <button id="pause" type="button">Pause</button>
+        </div>
+
+        <input id="current-time" type="range" min="0" max="1" step="0.1" value="0">
+        <input id="speed" type="range" min="1" max="30" step="0.5" value="10">
+    </div>
+</div>
+
+<div id="replay"></div>
+
+<script>
+    var file = document.querySelector('#file');
+    var currentTime = document.querySelector('#current-time');
+    var speed = document.querySelector('#speed');
+    var replay = document.querySelector('#replay');
+    var play = document.querySelector('#play');
+    var pause = document.querySelector('#pause');
+    var replayer = null;
+
+
+    file.addEventListener('change', function () {
+        if (!file.files.length) return;
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            var json = JSON.parse(e.target.result);
+
+            replayer = new Replay.Minimap(json);
+            replayer.mount(replay);
+
+            currentTime.max = replayer.duration;
+
+            replayer.on('load', function () {
+                replayer.start();
+            });
+
+            replayer.on('currentTimeChange', function () {
+                currentTime.value = replayer.currentTime;
+            });
+        };
+
+        reader.readAsText(file.files[0]);
+    });
+
+
+    currentTime.addEventListener('input', function () {
+        if (!replayer) return;
+
+        replayer.currentTime = currentTime.value;
+    });
+
+    speed.addEventListener('input', function () {
+        if (!replayer) return;
+
+        replayer.speed = speed.value;
+    });
+
+    play.addEventListener('click', function () {
+        if (!replayer) return;
+
+        pause.style.display = 'block';
+        play.style.display = 'none';
+
+        replayer.start();
+    });
+
+    pause.addEventListener('click', function () {
+        if (!replayer) return;
+
+        play.style.display = 'block';
+        pause.style.display = 'none';
+
+        replayer.stop();
+    });
+
+</script>
+
+</body>
+</html>
