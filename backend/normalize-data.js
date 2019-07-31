@@ -41,12 +41,7 @@ module.exports = function(logs) {
             shapes: [
                 {
                     ...CharacterAliveShape,
-                    elapsedTime: 0,
-                },
-            ],
-            healths: [
-                {
-                    health: 100,
+                    transition: false,
                     elapsedTime: 0,
                 },
             ],
@@ -62,7 +57,6 @@ module.exports = function(logs) {
         if (isPointEqual(lastLocation, data.location)) return;
 
         let { x, y } = data.location;
-
         character.locations.push({
             x, y,
             elapsedTime,
@@ -70,23 +64,24 @@ module.exports = function(logs) {
         });
     }
 
-    function addCharacterHealth(data, health, elapsedTime) {
-        let character = getCharacter(data.accountId);
-
-        let lastHealth = last(character.healths);
-        if (lastHealth.health === health) return;
-
-        character.healths.push({
-            health,
-            elapsedTime,
-        });
-    }
+    // function addCharacterHealth(data, health, elapsedTime) {
+    //     let character = getCharacter(data.accountId);
+    //
+    //     let lastHealth = last(character.healths);
+    //     if (lastHealth.health === health) return;
+    //
+    //     character.healths.push({
+    //         health,
+    //         elapsedTime,
+    //     });
+    // }
 
     function addCharacterShape(data, shape, elapsedTime) {
         let character = getCharacter(data.accountId);
 
         character.shapes.push({
             ...shape,
+            transition: false,
             elapsedTime,
         });
     }
@@ -181,6 +176,7 @@ module.exports = function(logs) {
                 type: 'ellipse',
                 width: 5,
                 height: 5,
+                fixSize: true,
                 fillColor: 0xffffff,
                 fillAlpha: 1,
                 lineColor: 0xffffff,
@@ -389,7 +385,7 @@ module.exports = function(logs) {
             case 'LogHeal': {
                 addCharacterLocation(log.character, elapsedTime);
                 // addPlayerHealth(log.character, log.character.health, enums.PlayerState.ALIVE, elapsedTime);
-                addCharacterHealth(log.character, log.character.health, elapsedTime);
+                // addCharacterHealth(log.character, log.character.health, elapsedTime);
                 addCharacterShape(log.character, CharacterAliveShape, elapsedTime);
                 break;
             }
@@ -484,7 +480,7 @@ module.exports = function(logs) {
 
                 addCharacterLocation(log.victim, elapsedTime);
                 // addPlayerHealth(log.victim, 0, enums.PlayerState.DEAD, elapsedTime);
-                addCharacterHealth(log.victim, 0, elapsedTime);
+                // addCharacterHealth(log.victim, 0, elapsedTime);
                 addCharacterShape(log.victim, CharacterDeadShape, elapsedTime);
 
                 // if (isCharacter(log.assistant)) {
@@ -508,7 +504,7 @@ module.exports = function(logs) {
 
                 addCharacterLocation(log.victim, elapsedTime);
                 // addPlayerHealth(log.victim, 0, enums.PlayerState.GROGGY, elapsedTime);
-                addCharacterHealth(log.victim, 0, elapsedTime);
+                // addCharacterHealth(log.victim, 0, elapsedTime);
                 addCharacterShape(log.victim, CharacterGroggyShape, elapsedTime);
                 break;
             }
@@ -524,7 +520,7 @@ module.exports = function(logs) {
                 addCharacterLocation(log.victim, elapsedTime);
 
                 // addPlayerHealth(log.victim, log.victim.health, enums.PlayerState.ALIVE, elapsedTime);
-                addCharacterHealth(log.victim, log.victim.health, elapsedTime);
+                // addCharacterHealth(log.victim, log.victim.health, elapsedTime);
                 addCharacterShape(log.victim, CharacterAliveShape, elapsedTime);
                 break;
             }
@@ -536,7 +532,7 @@ module.exports = function(logs) {
 
                 addCharacterLocation(log.victim, elapsedTime);
                 // addPlayerHealth(log.victim, log.victim.health - log.damage, null, elapsedTime);
-                addCharacterHealth(log.victim, log.victim.health - log.damage, elapsedTime);
+                // addCharacterHealth(log.victim, log.victim.health - log.damage, elapsedTime);
                 // addCharacterShape(log.victim, CharacterAliveShape, elapsedTime);
                 addPlayerAttack(log.attacker, log.victim, elapsedTime);
                 break;

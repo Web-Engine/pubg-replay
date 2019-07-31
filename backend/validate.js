@@ -1,46 +1,3 @@
-// function check(data) {
-//     let isArray = x => Array.isArray(x);
-//     let isObject = x => typeof x === 'object' && !isArray(x) && x !== null;
-//
-//     if (!isObject(data)) {
-//         throw 'Invalid json object';
-//     }
-//
-//     let properties = {
-//         'assets': isObject,
-//         'game': isObject,
-//         'canvas': isObject,
-//         'characters': isArray,
-//         'objects': isArray,
-//         'ui': isArray,
-//         'attacks': isArray,
-//     };
-//
-//     for (let property in properties) {
-//         if (!data.hasOwnProperty(property)) {
-//             throw `Data should have ${property} property.`;
-//         }
-//
-//         let checker = properties[property];
-//         let value = data[property];
-//         if (!checker(value)) {
-//             throw `${property} is invalid.`;
-//         }
-//     }
-//
-//
-// }
-//
-// try {
-//     check(json);
-//     console.log('Success');
-// }
-// catch (e) {
-//     console.error('Error', e);
-// }
-
-let json = require('./normalized.json');
-
 class ValidateError extends Error {
     constructor(message) {
         super(message);
@@ -315,18 +272,9 @@ function isValid(data) {
     });
 }
 
-try {
-    isValid(json);
-    console.log('Success');
-}
-catch (e) {
-    if (e instanceof ValidateError) {
-        console.log(e.message + ':', e.path.join('.') + '.' + e.property);
-
-        console.log('parent:', e.parent);
-        console.log('value:', e.value);
-    }
-    else {
-        console.error('Error', e);
-    }
-}
+module.exports = {
+    isValid,
+    ValidateError,
+    PropertyNotFound,
+    InvalidProperty,
+};

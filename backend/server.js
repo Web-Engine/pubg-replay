@@ -2,7 +2,11 @@ require('dotenv').config();
 
 const request = require('request-promise-native');
 const express = require('express');
+const path = require('path');
 const app = express();
+
+const { isValid, ValidateError } = require('./validate');
+
 app.use(express.json({limit: '50mb'}));
 
 const normalizeData = require('./normalize-data');
@@ -39,10 +43,26 @@ app.get('/matches/:platform/:match_id', async (req, res) => {
     res.send(output);
 });
 
-app.post('/data', async (req, res) => {
-    let reqData = req.body;
+app.post('/check', async (req, res) => {
+    let data = req.body;
 
-    res.send(reqData);
+    try {
+        isValid(data);
+
+        res.send({ isValid: true });
+    }
+    catch (e) {
+        if (e instanceof ValidateError) {
+            res.send({
+                isValid: false,
+                message: `${e.message}: ${e.path.join('.')}.${e.property}`,
+                parent: e.parent,
+            });
+            return;
+        }
+
+        throw e;
+    }
 });
 
 const server = app.listen(process.env.SERVER_PORT, () => {
