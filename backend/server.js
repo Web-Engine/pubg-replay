@@ -1,41 +1,41 @@
+require('dotenv').config();
+
 const request = require('request-promise-native');
 const express = require('express');
 const app = express();
-require('dotenv').config();
-const apikey = process.env.API_KEY;
 
-app.get('/matches/:platform/:id', async (req, res) => {
+const normalizeData = require('./normalize-data');
+
+const API_KEY = process.env.API_KEY;
+
+app.get('/matches/:platform/:match_id', async (req, res) => {
+    let { platform, match_id } = req.params;
 
     let response = await request.get({
-        url: `https://api.pubg.com/shards/${req.params.platform}/matches/${req.params.id}`,
+        url: `https://api.pubg.com/shards/${platform}/matches/${match_id}`,
         headers: {
-            'Authorization': `Bearer ${apikey}`,
+            'Authorization': `Bearer ${API_KEY}`,
             'Accept': 'application/json',
         },
     });
 
-    let resObject = JSON.parse(response);
-    let telemetryID = resObject.data.relationships.assets.data[0].id;
-    let index = resObject.included.findIndex(data => data.id === telemetryID);
-    let telemetryURL = resObject.included[index].attributes.URL;
+    let responseJSON = JSON.parse(response);
+    let telemetryID = responseJSON.data.relationships.assets.data[0].id;
+    let telemetryURL = responseJSON.included.find(data => data.id === telemetryID).attributes.URL;
 
     response = await request.get({
         url:  telemetryURL,
         headers: {
-            'Authorization': `Bearer ${apikey}`,
+            'Authorization': `Bearer ${API_KEY}`,
             'Accept': 'application/json',
         },
         gzip: true,
     });
 
     let telemetryData = JSON.parse(response);
-    let formatData = new Object();
+    let output = normalizeData(telemetryData);
 
-    var data = require('./data');
-
-    formatData = data.normalizeData(telemetryData);
-
-    res.send(formatData);
+    res.send(output);
 });
 
 const server = app.listen(process.env.SERVER_PORT, () => {
