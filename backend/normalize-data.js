@@ -2,6 +2,7 @@ const mapSizes = {
     Desert_Main: 800000,
     DihorOtok_Main: 600000,
     Erangel_Main: 800000,
+    Baltic_Main: 800000,
     Range_Main: 200000,
     Savage_Main: 400000,
 };
