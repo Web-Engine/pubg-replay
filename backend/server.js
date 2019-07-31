@@ -19,7 +19,7 @@ app.get('/', async (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public/replay.html'));
 });
 
-app.get('/matches/:platform/:match_id', async (req, res) => {
+app.get('/pubg/matches/:platform/:match_id', async (req, res) => {
     let { platform, match_id } = req.params;
 
     let response = await request.get({
