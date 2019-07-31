@@ -6,15 +6,6 @@ const mapSizes = {
     Savage_Main: 400000,
 };
 
-const mapNames =  {
-    "Desert_Main": "Miramar",
-    "DihorOtok_Main": "Vikendi",
-    "Erangel_Main": "Erangel",
-    "Baltic_Main": "Erangel_Remastered",
-    "Range_Main": "Camp_Jackal",
-    "Savage_Main": "Sanhok"
-};
-
 function back(array, index) {
     if (array.length <= index) return null;
 
@@ -211,7 +202,7 @@ module.exports = function(logs) {
 
     let matchStart = logs.shift();
     let mapSize = mapSizes[matchStart.mapName];
-    let mapName = mapNames[matchStart.mapName];
+    let mapName = matchStart.mapName;
 
     let startTime = getTime(matchStart._D);
 
