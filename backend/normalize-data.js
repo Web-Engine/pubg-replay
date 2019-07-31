@@ -67,24 +67,13 @@ module.exports = function(logs) {
         if (isPointEqual(lastLocation, data.location)) return;
 
         let { x, y } = data.location;
+
         character.locations.push({
             x, y,
             elapsedTime,
             transition: true,
         });
     }
-
-    // function addCharacterHealth(data, health, elapsedTime) {
-    //     let character = getCharacter(data.accountId);
-    //
-    //     let lastHealth = last(character.healths);
-    //     if (lastHealth.health === health) return;
-    //
-    //     character.healths.push({
-    //         health,
-    //         elapsedTime,
-    //     });
-    // }
 
     function addCharacterShape(data, shape, elapsedTime) {
         let character = getCharacter(data.accountId);
@@ -238,6 +227,7 @@ module.exports = function(logs) {
         fillColor: 0xFFFFFF,
         fillAlpha: 1,
     };
+
     const CharacterGroggyShape = {
         type: 'ellipse',
         width: 10,
@@ -249,6 +239,7 @@ module.exports = function(logs) {
         fillColor: 0xFFFF00,
         fillAlpha: 1,
     };
+
     const CharacterDeadShape = {
         type: 'ellipse',
         width: 10,
@@ -489,7 +480,10 @@ module.exports = function(logs) {
                 //     addCharacterLocation(log.killer, elapsedTime);
                 // }
 
-                addCharacterLocation(log.victim, elapsedTime);
+                if (log.attackId !== -1) {
+                    addCharacterLocation(log.victim, elapsedTime);
+                }
+
                 // addPlayerHealth(log.victim, 0, enums.PlayerState.DEAD, elapsedTime);
                 // addCharacterHealth(log.victim, 0, elapsedTime);
                 addCharacterShape(log.victim, CharacterDeadShape, elapsedTime);
@@ -530,22 +524,20 @@ module.exports = function(logs) {
                 addCharacterLocation(log.reviver, elapsedTime);
                 addCharacterLocation(log.victim, elapsedTime);
 
-                // addPlayerHealth(log.victim, log.victim.health, enums.PlayerState.ALIVE, elapsedTime);
-                // addCharacterHealth(log.victim, log.victim.health, elapsedTime);
                 addCharacterShape(log.victim, CharacterAliveShape, elapsedTime);
                 break;
             }
 
             case 'LogPlayerTakeDamage': {
+                if (log.attackId === -1) break;
+
                 if (isCharacter(log.attacker)) {
                     addCharacterLocation(log.attacker, elapsedTime);
+
+                    addPlayerAttack(log.attacker, log.victim, elapsedTime);
                 }
 
                 addCharacterLocation(log.victim, elapsedTime);
-                // addPlayerHealth(log.victim, log.victim.health - log.damage, null, elapsedTime);
-                // addCharacterHealth(log.victim, log.victim.health - log.damage, elapsedTime);
-                // addCharacterShape(log.victim, CharacterAliveShape, elapsedTime);
-                addPlayerAttack(log.attacker, log.victim, elapsedTime);
                 break;
             }
 
