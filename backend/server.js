@@ -13,6 +13,12 @@ const normalizeData = require('./normalize-data');
 
 const API_KEY = process.env.API_KEY;
 
+app.use(express.static('public'));
+
+app.get('/', async (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public/replay.html'));
+});
+
 app.get('/matches/:platform/:match_id', async (req, res) => {
     let { platform, match_id } = req.params;
 
