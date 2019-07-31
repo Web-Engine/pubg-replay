@@ -331,14 +331,33 @@ exports.normalizeData = function(logs) {
         });
     }
 
-    function addPlayerAttack(attacker, victim, elapsedTime) {
-        // if (attacker === null) return;
-        //
-        // attacks.push({
-        //     attacker: { location: attacker.location },
-        //     victim: { location: victim.location },
-        //     elapsedTime,
-        // });
+    function addPlayerAttack(attacker, target, elapsedTime) {
+        if (attacker === null) return;
+
+        attacks.push({
+            type: 'bullet',
+            attacker: {
+                x: attacker.location.x,
+                y: attacker.location.y,
+            },
+            target: {
+                x: target.location.x,
+                y: target.location.y,
+            },
+            shape: {
+                type: 'ellipse',
+                width: 5,
+                height: 5,
+                fillColor: 0xffffff,
+                fillAlpha: 1,
+                lineColor: 0xffffff,
+                lineAlpha: 0,
+                lineWidth: 0,
+            },
+            duration: 300,
+            fixDuration: true,
+            elapsedTime: elapsedTime,
+        });
     }
 
     if (!Array.isArray(logs)) {
@@ -505,7 +524,6 @@ exports.normalizeData = function(logs) {
                 carePackages.push({
                     locations: [
                         {
-                            name: 'CarePackage',
                             x, y,
                             elapsedTime,
                         },
