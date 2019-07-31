@@ -147,6 +147,8 @@ function isValid(data) {
     let check = makeChecker(data);
     check('assets', isObject);
 
+    let timeFlowCheck = 0;
+
     for (let key in data.assets) {
         if (!data.assets.hasOwnProperty(key)) continue;
 
@@ -168,15 +170,25 @@ function isValid(data) {
     check.array('characters', check => {
         check('id', isString);
         check('name', isString);
-
+        timeFlowCheck = 0;
         check.array('locations', check => {
+            if (timeFlowCheck > check.base.elapsedTime) {
+                throw new Error('time flow error');
+            } else timeFlowCheck = check.base.elapsedTime;
+
             check('x', isNumber);
             check('y', isNumber);
             check('elapsedTime', isNumber);
             check('transition', isBoolean);
         });
 
+        timeFlowCheck = 0;
+
         check.array('shapes', check => {
+            if (timeFlowCheck > check.base.elapsedTime) {
+                throw new Error('time flow error');
+            } else timeFlowCheck = check.base.elapsedTime;
+
             check('type', isEnum('rectangle', 'ellipse', 'image'));
             check('width', isNumber);
             check('height', isNumber);
@@ -202,18 +214,27 @@ function isValid(data) {
     });
 
     check.array('objects', check => {
+        timeFlowCheck = 0;
         check.array('locations', check => {
+            if (timeFlowCheck > check.base.elapsedTime) {
+                throw new Error('time flow error');
+            } else timeFlowCheck = check.base.elapsedTime;
+
             check('x', isNumber);
             check('y', isNumber);
             check('elapsedTime', isNumber);
         });
-
+        timeFlowCheck = 0;
         check.array('shapes', check => {
+            if (timeFlowCheck > check.base.elapsedTime) {
+                throw new Error('time flow error');
+            } else timeFlowCheck = check.base.elapsedTime;
+
             check('type', isEnum('rectangle', 'ellipse', 'image'));
             check('width', isNumber);
             check('height', isNumber);
-            // check('fixSize', isBoolean);
-            // check('transition', isBoolean);
+            check('fixSize', isBoolean);
+            check('transition', isBoolean);
             check('elapsedTime', isNumber);
 
             switch (check.base.type)
@@ -231,21 +252,42 @@ function isValid(data) {
                     break;
             }
         });
+        if (check.base.tooltips.length) {
+            timeFlowCheck = 0;
+            check.array('tooltips', check => {
+                if (timeFlowCheck > check.base.elapsedTime) {
+                    throw new Error('time flow error');
+                } else timeFlowCheck = check.base.elapsedTime;
+
+                check('text', isString);
+                check('elapsedTime', isNumber);
+            });
+        }
     });
 
     check.array('ui', check => {
+        timeFlowCheck = 0;
         check.array('positions', check => {
+            if (timeFlowCheck > check.base.elapsedTime) {
+                throw new Error('time flow error');
+            } else timeFlowCheck = check.base.elapsedTime;
+
             check('x', isNumber);
             check('y', isNumber);
             check('elapsedTime', isNumber);
         });
 
+        timeFlowCheck = 0;
         check.array('shapes', check => {
+            if (timeFlowCheck > check.base.elapsedTime) {
+                throw new Error('time flow error');
+            } else timeFlowCheck = check.base.elapsedTime;
+
             check('type', isEnum('rectangle', 'ellipse', 'image'));
             check('width', isNumber);
             check('height', isNumber);
-            // check('fixSize', isBoolean);
-            // check('transition', isBoolean);
+            check('fixSize', isBoolean);
+            check('transition', isBoolean);
             check('elapsedTime', isNumber);
 
             switch (check.base.type)
@@ -264,7 +306,12 @@ function isValid(data) {
             }
         });
 
+        timeFlowCheck = 0;
         check.array('texts', check => {
+            if (timeFlowCheck > check.base.elapsedTime) {
+                throw new Error('time flow error');
+            } else timeFlowCheck = check.base.elapsedTime;
+
             check('text', isString);
             check('textColor', isColor);
             check('textAlpha', isNumber);
@@ -273,7 +320,12 @@ function isValid(data) {
         })
     });
 
+    timeFlowCheck = 0;
     check.array('attacks', check => {
+        if (timeFlowCheck > check.base.elapsedTime) {
+            throw new Error('time flow error');
+        } else timeFlowCheck = check.base.elapsedTime;
+        
         check('type', isEnum('line', 'bullet'));
         check('duration', isNumber);
         check('fixDuration', isBoolean);
