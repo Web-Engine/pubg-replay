@@ -5,17 +5,30 @@
         </v-app-bar>
 
         <v-content>
-            <v-slider min="0" max="3302123" thumb-size="60">
-                <template #thumb-label="currentTime">
-                    {{ timeFormat(currentTime.value) }}
-                </template>
-            </v-slider>
+            <v-container fluid>
+                <v-layout>
+                    <v-flex xs11>
+                        <v-slider min="0" max="3302123" thumb-size="60">
+                            <template #thumb-label="currentTime">
+                                {{ timeFormat(currentTime.value) }}
+                            </template>
 
-            <v-slider min="1" max="30" thumb-size="40">
-                <template #thumb-label="speed">
-                    x{{ speed.value }}
-                </template>
-            </v-slider>
+                            <template #prepend>
+                                <v-icon @click="toggle">
+                                    {{ isPlaying ? 'mdi-stop-circle-outline' : 'mdi-play-circle-outline' }}
+                                </v-icon>
+                            </template>
+                        </v-slider>
+                    </v-flex>
+                    <v-flex xs1>
+                        <v-slider min="1" max="30" thumb-size="40">
+                            <template #thumb-label="speed">
+                                x{{ speed.value }}
+                            </template>
+                        </v-slider>
+                    </v-flex>
+                </v-layout>
+            </v-container>
 
         </v-content>
     </v-app>
@@ -26,7 +39,7 @@ export default {
     name: 'App',
     components: {},
     methods: {
-        timeFormat: time => {
+        timeFormat(time) {
             let milliseconds = time % 1000;
             let seconds = Math.floor(time / 1000);
 
@@ -39,9 +52,15 @@ export default {
 
             return `${minutes}:${seconds}.${milliseconds}`;
         },
-    },
-    data: () => ({
 
-    }),
+        toggle() {
+            this.isPlaying = !this.isPlaying;
+        },
+    },
+    data() {
+        return {
+            isPlaying: false,
+        };
+    },
 };
 </script>
