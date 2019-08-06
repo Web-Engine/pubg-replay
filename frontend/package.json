@@ -1,21 +1,19 @@
 {
   "name": "pubg-replay",
   "version": "1.0.0",
-  "description": "The mini-map playing web of the game \"Player Unknown Battle Ground\"",
   "private": true,
+  "description": "The mini-map playing web of the game \"Player Unknown Battle Ground\"",
+  "author": "Web-Engine",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Web-Engine/pubg-replay.git"
-  },
   "dependencies": {
     "core-js": "^2.6.5",
     "vue": "^2.6.10",
     "vue-router": "^3.0.7",
+    "vuetify": "^2.0.0",
     "vuex": "^3.1.1"
   },
   "devDependencies": {
@@ -25,7 +23,11 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "sass": "^1.17.4",
+    "sass-loader": "^7.1.0",
+    "vue-cli-plugin-vuetify": "^0.6.1",
+    "vue-template-compiler": "^2.6.10",
+    "vuetify-loader": "^1.2.2"
   },
   "eslintConfig": {
     "root": true,
@@ -101,16 +103,19 @@
     "> 1%",
     "last 2 versions"
   ],
+  "bugs": {
+    "url": "https://github.com/Web-Engine/pubg-replay/issues"
+  },
+  "homepage": "https://github.com/Web-Engine/pubg-replay#readme",
   "keywords": [
     "pubg",
     "replay",
     "minimap",
     "mini-map"
   ],
-  "author": "Web-Engine",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Web-Engine/pubg-replay/issues"
-  },
-  "homepage": "https://github.com/Web-Engine/pubg-replay#readme"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Web-Engine/pubg-replay.git"
+  }
 }
