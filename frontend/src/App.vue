@@ -18,7 +18,7 @@
 
                         <v-layout>
                             <v-flex xs11>
-                                <v-slider min="0" max="3302123" thumb-size="60" v-model="currentTime" @focus="">
+                                <v-slider min="0" :max="duration" thumb-size="60" v-model="currentTime">
                                     <template #thumb-label="currentTime">
                                         {{ timeFormat(currentTime.value) }}
                                     </template>
@@ -77,18 +77,26 @@ export default {
 
         onCurrentTimeChange() {
             this.currentTime = this.minimap.currentTime;
-        }
+        },
+
+        onResize() {
+            if (!this.$refs.replay) return;
+
+            this.minimap.width = this.$refs.replay.offsetWidth;
+            this.minimap.height = this.$refs.replay.offsetHeight;
+        },
     },
     watch: {
         currentTime () {
             this.minimap.currentTime = this.currentTime;
-        }
+        },
     },
     data() {
         return {
             isPlaying: false,
             currentTime: 0,
             speed: 1,
+            duration: 0,
         };
     },
     created() {
@@ -115,23 +123,38 @@ export default {
         });
 
         this.minimap.on('currentTimeChange', this.onCurrentTimeChange);
+
+        this.duration = this.minimap.duration;
+        window.addEventListener('resize', this.onResize);
     },
     mounted() {
         this.minimap.mount(this.$refs.replay);
+        this.onResize();
     },
     destroyed() {
         this.minimap.off('currentTimeChange', this.onCurrentTimeChange);
+        window.removeEventListener('resize', this.onResize);
     },
 };
 </script>
 
-<style scoped>
+<style>
     #replay {
+        position: relative;
         width: 100%;
         height: 100%;
         background: #000;
     }
 
+    #replay canvas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: block;
+    }
+</style>
+
+<style scoped>
     .layout-width {
         max-width: 80vh;
     }
