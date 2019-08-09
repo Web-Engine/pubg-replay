@@ -1,7 +1,5 @@
 
 # pubg-replay
-https://github.com/Web-Engine/pubg-replay
-
 이 레포지토리는 사용자가 입력한 데이터가 올바른 포맷인지 확인하고, 올바른 포맷인 경우 하단에 설명할 [`pubg-minimap-replay`](https://github.com/Web-Engine/pubg-minimap-replay)를 활용하여 사용자에게 리플레이를 보여주는 서버입니다.
 또한, 배틀그라운드의 리플레이 데이터를 `포맷된 데이터`로 변경해주는 기능 또한 포함되어 있습니다.
 
