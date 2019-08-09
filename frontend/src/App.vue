@@ -66,9 +66,23 @@ export default {
 
         toggle() {
             this.isPlaying = !this.isPlaying;
+
+            if (this.isPlaying) {
+                this.minimap.start();
+            }
+            else {
+                this.minimap.stop();
+            }
+        },
+
+        onCurrentTimeChange() {
+            this.currentTime = this.minimap.currentTime;
         }
     },
     watch: {
+        currentTime () {
+            this.minimap.currentTime = this.currentTime;
+        }
     },
     data() {
         return {
@@ -78,10 +92,35 @@ export default {
         };
     },
     created() {
+        this.minimap = new Replay.Minimap({
+            assets: {
+                'background': 'assets/maps/Erangel_Main_Low_Res.png',
+            },
+            game: {
+                width: 1000,
+                height: 1000,
+                background: {
+                    image: 'background',
+                },
+                duration: 1000000,
+            },
+            canvas: {
+                width: 400,
+                height: 400,
+            },
+            characters: [],
+            ui: [],
+            objects: [],
+            attacks: [],
+        });
+
+        this.minimap.on('currentTimeChange', this.onCurrentTimeChange);
     },
     mounted() {
+        this.minimap.mount(this.$refs.replay);
     },
     destroyed() {
+        this.minimap.off('currentTimeChange', this.onCurrentTimeChange);
     },
 };
 </script>
