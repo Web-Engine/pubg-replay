@@ -12,6 +12,18 @@
                             <v-flex>
                                 <v-responsive :aspect-ratio="1">
                                     <div ref="replay" id="replay"></div>
+                                    <v-layout class="zoom-controller" column>
+                                        <v-flex>
+                                            <v-btn class="zoom-button zoom-plus" small @click="addZoom">
+                                                <v-icon>mdi-plus</v-icon>
+                                            </v-btn>
+                                        </v-flex>
+                                        <v-flex>
+                                            <v-btn class="zoom-button zoom-minus" small @click="subtractZoom">
+                                                <v-icon>mdi-minus</v-icon>
+                                            </v-btn>
+                                        </v-flex>
+                                    </v-layout>
                                 </v-responsive>
                             </v-flex>
                         </v-layout>
@@ -85,6 +97,14 @@ export default {
             this.minimap.width = this.$refs.replay.offsetWidth;
             this.minimap.height = this.$refs.replay.offsetHeight;
         },
+
+        addZoom() {
+            this.minimap.zoom += 1;
+        },
+
+        subtractZoom() {
+            this.minimap.zoom -= 1;
+        },
     },
     watch: {
         currentTime () {
@@ -157,5 +177,11 @@ export default {
 <style scoped>
     .layout-width {
         max-width: 80vh;
+    }
+
+    .zoom-controller {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
     }
 </style>
