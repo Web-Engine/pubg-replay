@@ -5,31 +5,42 @@
         </v-app-bar>
 
         <v-content>
-            <v-container fluid>
-                <v-layout>
-                    <v-flex xs11>
-                        <v-slider min="0" max="3302123" thumb-size="60">
-                            <template #thumb-label="currentTime">
-                                {{ timeFormat(currentTime.value) }}
-                            </template>
+            <v-container>
+                <v-layout justify-center>
+                    <v-flex class="layout-width">
+                        <v-layout>
+                            <v-flex>
+                                <v-responsive :aspect-ratio="1">
+                                    <div ref="replay" id="replay"></div>
+                                </v-responsive>
+                            </v-flex>
+                        </v-layout>
 
-                            <template #prepend>
-                                <v-icon @click="toggle">
-                                    {{ isPlaying ? 'mdi-stop-circle-outline' : 'mdi-play-circle-outline' }}
-                                </v-icon>
-                            </template>
-                        </v-slider>
-                    </v-flex>
-                    <v-flex xs1>
-                        <v-slider min="1" max="30" thumb-size="40">
-                            <template #thumb-label="speed">
-                                x{{ speed.value }}
-                            </template>
-                        </v-slider>
+                        <v-layout>
+                            <v-flex xs11>
+                                <v-slider min="0" max="3302123" thumb-size="60" v-model="currentTime" @focus="">
+                                    <template #thumb-label="currentTime">
+                                        {{ timeFormat(currentTime.value) }}
+                                    </template>
+
+                                    <template #prepend>
+                                        <v-icon @click="toggle">
+                                            {{ isPlaying ? 'mdi-stop-circle-outline' : 'mdi-play-circle-outline' }}
+                                        </v-icon>
+                                    </template>
+                                </v-slider>
+                            </v-flex>
+                            <v-flex xs1>
+                                <v-slider ref="speed" min="1" max="30" thumb-size="40" v-model="speed">
+                                    <template #thumb-label="speed">
+                                        x{{ speed.value }}
+                                    </template>
+                                </v-slider>
+                            </v-flex>
+                        </v-layout>
                     </v-flex>
                 </v-layout>
             </v-container>
-
         </v-content>
     </v-app>
 </template>
@@ -55,12 +66,34 @@ export default {
 
         toggle() {
             this.isPlaying = !this.isPlaying;
-        },
+        }
+    },
+    watch: {
     },
     data() {
         return {
             isPlaying: false,
+            currentTime: 0,
+            speed: 1,
         };
+    },
+    created() {
+    },
+    mounted() {
+    },
+    destroyed() {
     },
 };
 </script>
+
+<style scoped>
+    #replay {
+        width: 100%;
+        height: 100%;
+        background: #000;
+    }
+
+    .layout-width {
+        max-width: 80vh;
+    }
+</style>
