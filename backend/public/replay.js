@@ -46339,7 +46339,9 @@ function (_PIXI$utils$EventEmit) {
 
       _this._initializeTicker();
 
-      _this._forceRender();
+      _this._isLoaded = true;
+
+      _this._invalidate();
     });
 
     return _this;
@@ -46372,6 +46374,7 @@ function (_PIXI$utils$EventEmit) {
       this._components = [];
       this._attacks = [];
       this._tooltips = [];
+      this._isLoaded = false;
       this._center = new _observable_point__WEBPACK_IMPORTED_MODULE_5__["default"](this.gameWidth / 2, this.gameHeight / 2);
 
       this._center.on('change', function () {
@@ -46809,6 +46812,7 @@ function (_PIXI$utils$EventEmit) {
   }, {
     key: "_invalidate",
     value: function _invalidate() {
+      if (!this._isLoaded) return;
       this._background.width = this.width * this.zoom;
       this._background.height = this.height * this.zoom;
       var x = (this.center.x / this.gameWidth * this.zoom - 0.5) * this.width;

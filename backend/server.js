@@ -16,7 +16,7 @@ const API_KEY = process.env.API_KEY;
 app.use(express.static('public'));
 
 app.get('/', async (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'public/replay.html'));
+    res.sendFile(path.resolve(__dirname, 'public/index.html'));
 });
 
 app.get('/pubg/matches/:platform/:match_id', async (req, res) => {
