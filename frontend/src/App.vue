@@ -7,7 +7,7 @@
 
             <v-toolbar-items>
                 <v-btn text @click="onClickLoadData">Load data</v-btn>
-                <v-btn text @click="onClickDownloadData">Download data</v-btn>
+                <!--<v-btn text @click="onClickDownloadData">Download data</v-btn>-->
             </v-toolbar-items>
 
             <input class="hidden" type="file" ref="file" @change="onFileChange" />
