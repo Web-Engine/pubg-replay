@@ -2,6 +2,15 @@
     <v-app>
         <v-app-bar app>
             <v-toolbar-title>Replay</v-toolbar-title>
+
+            <v-spacer />
+
+            <v-toolbar-items>
+                <v-btn text @click="onClickLoadData">Load data</v-btn>
+                <v-btn text @click="onClickDownloadData">Download data</v-btn>
+            </v-toolbar-items>
+
+            <input class="hidden" type="file" ref="file" @change="onFileChange" />
         </v-app-bar>
 
         <v-content>
@@ -93,9 +102,61 @@ export default {
 
         onResize() {
             if (!this.$refs.replay) return;
+            if (!this.minimap) return;
 
             this.minimap.width = this.$refs.replay.offsetWidth;
             this.minimap.height = this.$refs.replay.offsetHeight;
+        },
+
+        onClickLoadData() {
+            this.$refs.file.click();
+        },
+
+        onFileChange() {
+            let files = this.$refs.file.files;
+            if (!files.length) return;
+
+            let reader = new FileReader();
+            reader.onload = e => {
+                let result = e.target.result;
+
+                try {
+                    let json = JSON.parse(result);
+                    this.onLoadData(json);
+                }
+                catch (err) {
+                    alert('JSON parse failed.');
+                }
+            };
+
+            reader.readAsText(files[0]);
+        },
+
+        onClickDownloadData() {
+
+        },
+
+        onLoadData(data) {
+            this.clearMinimap();
+
+            this.minimap = new Replay.Minimap(data);
+            this.minimap.mount(this.$refs.replay);
+            this.onResize();
+
+            this.minimap.on('currentTimeChange', this.onCurrentTimeChange);
+
+            this.duration = this.minimap.duration;
+            window.addEventListener('resize', this.onResize);
+        },
+
+        clearMinimap() {
+            if (!this.minimap) return;
+            this.$refs.replay.innerHTML = '';
+
+            this.minimap.off('currentTimeChange', this.onCurrentTimeChange);
+            window.removeEventListener('resize', this.onResize);
+
+            this.minimap = null;
         },
 
         addZoom() {
@@ -116,44 +177,15 @@ export default {
             isPlaying: false,
             currentTime: 0,
             speed: 1,
-            duration: 0,
+            duration: 1,
         };
     },
     created() {
-        this.minimap = new Replay.Minimap({
-            assets: {
-                'background': 'assets/maps/Erangel_Main_Low_Res.png',
-            },
-            game: {
-                width: 1000,
-                height: 1000,
-                background: {
-                    image: 'background',
-                },
-                duration: 1000000,
-            },
-            canvas: {
-                width: 400,
-                height: 400,
-            },
-            characters: [],
-            ui: [],
-            objects: [],
-            attacks: [],
-        });
-
-        this.minimap.on('currentTimeChange', this.onCurrentTimeChange);
-
-        this.duration = this.minimap.duration;
-        window.addEventListener('resize', this.onResize);
     },
     mounted() {
-        this.minimap.mount(this.$refs.replay);
-        this.onResize();
     },
     destroyed() {
-        this.minimap.off('currentTimeChange', this.onCurrentTimeChange);
-        window.removeEventListener('resize', this.onResize);
+        this.clearMinimap();
     },
 };
 </script>
@@ -171,6 +203,10 @@ export default {
         left: 0;
         top: 0;
         display: block;
+    }
+
+    .hidden {
+        display: none;
     }
 </style>
 
