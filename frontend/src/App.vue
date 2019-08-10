@@ -45,7 +45,7 @@
                                     </template>
 
                                     <template #prepend>
-                                        <v-icon @click="toggle">
+                                        <v-icon @click="togglePlayState">
                                             {{ isPlaying ? 'mdi-stop-circle-outline' : 'mdi-play-circle-outline' }}
                                         </v-icon>
                                     </template>
@@ -85,15 +85,19 @@ export default {
             return `${minutes}:${seconds}.${milliseconds}`;
         },
 
-        toggle() {
-            this.isPlaying = !this.isPlaying;
+        togglePlayState() {
+            if (!this.minimap) return;
 
-            if (this.isPlaying) {
-                this.minimap.start();
-            }
-            else {
+            if (this.minimap.isPlaying) {
                 this.minimap.stop();
             }
+            else {
+                this.minimap.start();
+            }
+        },
+
+        onPlayStateChange() {
+            this.isPlaying = this.minimap.isPlaying;
         },
 
         onCurrentTimeChange() {
@@ -144,8 +148,13 @@ export default {
             this.onResize();
 
             this.minimap.on('currentTimeChange', this.onCurrentTimeChange);
+            this.minimap.on('playStateChange', this.onPlayStateChange);
 
+            this.isPlaying = this.minimap.isPlaying;
+            this.currentTime = this.minimap.currentTime;
+            this.speed = this.minimap.speed;
             this.duration = this.minimap.duration;
+
             window.addEventListener('resize', this.onResize);
         },
 
@@ -154,6 +163,7 @@ export default {
             this.$refs.replay.innerHTML = '';
 
             this.minimap.off('currentTimeChange', this.onCurrentTimeChange);
+            this.minimap.off('playStateChange', this.onPlayStateChange);
             window.removeEventListener('resize', this.onResize);
 
             this.minimap = null;
@@ -170,6 +180,10 @@ export default {
     watch: {
         currentTime () {
             this.minimap.currentTime = this.currentTime;
+        },
+
+        speed () {
+            this.minimap.speed = this.speed;
         },
     },
     data() {
