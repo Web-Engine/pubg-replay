@@ -6,7 +6,12 @@
             <v-spacer />
 
             <v-toolbar-items>
-                <v-btn text @click="onClickLoadData">Load data</v-btn>
+                <v-btn text @click="onClickRun">
+                    <v-icon left>mdi-play-outline</v-icon> Run
+                </v-btn>
+                <v-btn text @click="onClickLoad">
+                    <v-icon left>mdi-upload-outline</v-icon> Load
+                </v-btn>
                 <!--<v-btn text @click="onClickDownloadData">Download data</v-btn>-->
             </v-toolbar-items>
 
@@ -114,7 +119,7 @@ export default {
             this.minimap.height = this.$refs.replay.offsetHeight;
         },
 
-        onClickLoadData() {
+        onClickLoad() {
             this.$refs.file.click();
         },
 
@@ -138,16 +143,10 @@ export default {
             reader.readAsText(files[0]);
         },
 
-        onClickDownloadData() {
-
-        },
-
-        onLoadData(data) {
+        onClickRun() {
             this.clearMinimap();
 
-            this.data = data;
-
-            this.minimap = new Replay.Minimap(data);
+            this.minimap = new Replay.Minimap(this.data);
             this.minimap.mount(this.$refs.replay);
             this.onResize();
 
@@ -160,6 +159,14 @@ export default {
             this.duration = this.minimap.duration;
 
             window.addEventListener('resize', this.onResize);
+        },
+
+        onClickDownloadData() {
+
+        },
+
+        onLoadData(data) {
+            this.data = data;
         },
 
         clearMinimap() {
@@ -198,7 +205,7 @@ export default {
             duration: 1,
             data: {
                 assets: {
-                    'background': '',
+                    'background': 'assets/maps/Erangel_Main_High_Res.png',
                 },
                 game: {
                     width: 1000,
@@ -206,9 +213,15 @@ export default {
                     background: {
                         image: 'background',
                     },
+                    duration: 10000,
+                },
+                canvas: {
+                    width: 1000,
+                    height: 1000,
                 },
                 characters: [],
                 objects: [],
+                ui: [],
                 attacks: [],
             },
         };
@@ -216,6 +229,7 @@ export default {
     created() {
     },
     mounted() {
+        this.onClickRun();
     },
     destroyed() {
         this.clearMinimap();
