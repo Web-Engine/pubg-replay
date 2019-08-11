@@ -14,9 +14,9 @@
         </v-app-bar>
 
         <v-content>
-            <v-container>
-                <v-layout justify-center>
-                    <v-flex class="layout-width">
+            <split-pane split-to="columns" @update:size="onResize" :allow-resize="true" :size="50" units="percents" :resizerThickness="10" :resizerBorderThickness="5" resizerBorderColor="rgba(0, 0, 0, 0.5)">
+                <template slot="firstPane">
+                    <v-container>
                         <v-layout>
                             <v-flex>
                                 <v-responsive :aspect-ratio="1">
@@ -59,9 +59,12 @@
                                 </v-slider>
                             </v-flex>
                         </v-layout>
-                    </v-flex>
-                </v-layout>
-            </v-container>
+                    </v-container>
+                </template>
+                <template slot="secondPane">
+                    <v-jsoneditor class="json-editor" v-model="data" :plus="false" />
+                </template>
+            </split-pane>
         </v-content>
     </v-app>
 </template>
@@ -69,7 +72,6 @@
 <script>
 export default {
     name: 'App',
-    components: {},
     methods: {
         timeFormat(time) {
             let milliseconds = time % 1000;
@@ -143,6 +145,8 @@ export default {
         onLoadData(data) {
             this.clearMinimap();
 
+            this.data = data;
+
             this.minimap = new Replay.Minimap(data);
             this.minimap.mount(this.$refs.replay);
             this.onResize();
@@ -192,6 +196,21 @@ export default {
             currentTime: 0,
             speed: 1,
             duration: 1,
+            data: {
+                assets: {
+                    'background': '',
+                },
+                game: {
+                    width: 1000,
+                    height: 1000,
+                    background: {
+                        image: 'background',
+                    },
+                },
+                characters: [],
+                objects: [],
+                attacks: [],
+            },
         };
     },
     created() {
@@ -233,5 +252,10 @@ export default {
         position: absolute;
         right: 10px;
         bottom: 10px;
+    }
+
+    .json-editor {
+        width: 100%;
+        height: 100%;
     }
 </style>
