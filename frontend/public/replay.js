@@ -46322,8 +46322,6 @@ function (_PIXI$utils$EventEmit) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Minimap).call(this));
     _this._data = data;
 
-    _this._initializeOptions();
-
     _this._initializePIXI();
 
     _this._initializeProperties();
@@ -46350,14 +46348,11 @@ function (_PIXI$utils$EventEmit) {
 
 
   _createClass(Minimap, [{
-    key: "_initializeOptions",
-    value: function _initializeOptions() {}
-  }, {
     key: "_initializePIXI",
     value: function _initializePIXI() {
       this._app = new pixi_js__WEBPACK_IMPORTED_MODULE_0__["Application"]({
-        width: this._data.canvas.width,
-        height: this._data.canvas.height,
+        width: 800,
+        height: 800,
         antialias: true,
         autoStart: false
       });

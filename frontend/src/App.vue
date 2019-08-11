@@ -215,10 +215,6 @@ export default {
                     },
                     duration: 10000,
                 },
-                canvas: {
-                    width: 1000,
-                    height: 1000,
-                },
                 characters: [],
                 objects: [],
                 ui: [],
